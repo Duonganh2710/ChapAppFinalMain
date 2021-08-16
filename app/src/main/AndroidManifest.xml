@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chapappfinalmain">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,12 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/NoTitle">
-        <activity android:name=".Activity.EditImage.EditImageActivity"></activity>
+        <activity android:name=".Activity.MainApp.ProfileActivity"></activity>
+        <activity android:name=".Activity.EditImage.EditImageActivity" />
         <activity android:name=".Activity.MainApp.TelephoneDirectoryActivity" />
         <activity android:name=".Activity.MainApp.ChatActivity" />
-        <activity android:name=".Activity.MainApp.RegisterActivity">
-
-        </activity>
+        <activity android:name=".Activity.MainApp.RegisterActivity"></activity>
         <activity android:name=".Activity.MainApp.LoginActivity" />
         <activity android:name=".Activity.MainApp.FristActivity">
             <intent-filter>
@@ -29,9 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.MainApp.MainActivity" />
-        <activity android:name=".Activity.MainApp.CreateContentActivity" >
-
-        </activity>
+        <activity android:name=".Activity.MainApp.CreateContentActivity"></activity>
         <activity android:name=".Base.BaseActivity" />
     </application>
 
