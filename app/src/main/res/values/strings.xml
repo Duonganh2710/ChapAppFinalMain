@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">ChapAppFinalMain</string>
+    <string name="app_title">ChatEvery</string>
+    <string name="login">LOGIN</string>
+    <string name="info_to_register">Don\'t have an account?</string>
+    <string name="to_login">Login</string>
+
+    <string name="hint_email">Enter your email</string>
+    <string name="hint_name">Enter your name</string>
+    <string name="hint_password">Enter your password</string>
+
+    <string name="lack_of_character">Enter at least 9 character</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="phone_error">Phone only have 10 or 11 number</string>
+
+    <string name="dialog_title_lost_password">Wrong password</string>
+    <string name="dialog_message_lost_password">Your password incorrect. Do you want reset password?</string>
+    <string name="title_activity_work">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="chat">Chat</string>
+    <string name="work">Work</string>
+    <string name="profile">Profile</string>
+    <string name="hint_think">What do you thinks?</string>
+    <string name="create_articles">Create articles</string>
+    <string name="selecte_photo">Selecte photo</string>
+    <string name="info_content_exist">You have content so can\'t log out</string>
+    <string name="info_content_not_exist">You haven\'t content so can\'t send content</string>
+
+    <string name="edit_image_Layout_title">Edit Image</string>
+    <string name="done">Done</string>
+
+</resources>

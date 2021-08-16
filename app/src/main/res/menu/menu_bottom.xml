@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:title="Chat"
+        android:icon="@drawable/ic_chat"
+        app:cnb_iconColor="@color/selecte_color_chat"
+        />
+    <item
+        android:id="@+id/work"
+        android:title="Work"
+        android:icon="@drawable/ic_bell"
+        app:cnb_iconColor="@color/selecte_color_chat"
+        />
+    <item
+        android:id="@+id/user"
+        android:title="Profile"
+        android:icon="@drawable/ic_user"
+        app:cnb_iconColor="@color/selecte_color_chat"
+        />
+
+
+</menu>

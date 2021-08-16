@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1023447452293",
+    "project_id": "chapappfinalmain",
+    "storage_bucket": "chapappfinalmain.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023447452293:android:9b966bb000ae8eff8977ec",
+        "android_client_info": {
+          "package_name": "com.example.chapappfinalmain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023447452293-apaue7abmp6cglcu0da0klacsmj3fikt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chapappfinalmain",
+            "certificate_hash": "f573aa677c096f36566b72ee93eacc5d26edc50a"
+          }
+        },
+        {
+          "client_id": "1023447452293-btcupuvcbhupj703aj2i1ruvmbfs84g5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0XDeeUx0-pt6O5WTSrOeuCND3rzeJ1RA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1023447452293-btcupuvcbhupj703aj2i1ruvmbfs84g5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
