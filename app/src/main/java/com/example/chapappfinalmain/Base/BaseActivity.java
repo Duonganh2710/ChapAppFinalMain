@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -63,10 +64,22 @@ public abstract class BaseActivity extends AppCompatActivity{
         editor.putString(String.valueOf(DataOfUser.PhoneNumber), user.getPhoneNumber());
         editor.putString(String.valueOf(DataOfUser.ImageUrl), user.getImgUri());
         editor.apply();
-        if(user.getUserName().isEmpty()){
-            Log.d("TAG", "NULL");
+    }
+    public void saveObjectUser(Context context, String preferenceFileName, String keyNumber, Object object){
+        SharedPreferences sharedPreferences = getSharedPreferences(preferenceFileName, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String serializedObject = gson.toJson(object);
+        editor.putString(keyNumber, serializedObject);
+        editor.apply();
+    }
+    public static User getSavedUser(Context context, String preferenceFileName, String keyNumber, Class<User> user){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName, MODE_PRIVATE);
+        if(sharedPreferences.contains(keyNumber)) {
+            Gson gson = new Gson();
+            return gson.fromJson(sharedPreferences.getString(keyNumber, ""), user);
         }
-        Log.d("TAG", user.getUserName());
+        return null;
     }
 
     public void showDialog(@NonNull String message) {

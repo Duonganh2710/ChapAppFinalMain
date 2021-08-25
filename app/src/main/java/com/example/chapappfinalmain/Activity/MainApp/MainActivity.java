@@ -13,9 +13,11 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.hardware.usb.UsbDevice;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.example.chapappfinalmain.Base.BaseActivity;
 import com.example.chapappfinalmain.BroadcastRecive.InternetBroadcastReceive;
@@ -49,46 +51,59 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        createProgressDialog();
+        internetManager();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        final String userId = currentUser.getUid();
+        if(broadcastReceive.isConnect) {
+            createProgressDialog();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userData = snapshot.getValue(User.class);
-                user = userData;
-                if(user != null){
-                    saveDatabaseUser(user, getApplicationContext());
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            final String userId = currentUser.getUid();
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User userData = snapshot.getValue(User.class);
+                    user = userData;
+
+                    progressDialog.dismiss();
+
+                    if(user != null){
+                        saveDatabaseUser(user, getApplicationContext());
+                        saveObjectUser(getApplicationContext(), "USER_DATA", "USER_KEY", user);
+                    }
+                    progressDialog.dismiss();
+
+                    ChatFragment(user);
+                    botNavMain.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(int i) {
+                            selectItemMenu(i);
+                        }
+                    });
                 }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                progressDialog.dismiss();
-
-                ChatFragment(user);
-                botNavMain.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(int i) {
-                        selectItemMenu(i);
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+                }
+            });
+        }
 
     }
 
     private void createProgressDialog() {
         progressDialog = new Dialog(MainActivity.this);
-        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressDialog.setContentView(R.layout.get_data_dialog);
+        progressDialog.setCancelable(false);
+        progressDialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
         progressDialog.show();
+    }
+    private void internetManager(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceive, intentFilter);
     }
 
     private void selectItemMenu(int i) {
@@ -110,7 +125,6 @@ public class MainActivity extends BaseActivity {
 
     private void init() {
         botNavMain = findViewById(R.id.bottom_navigation);
-
         user = new User();
     }
 

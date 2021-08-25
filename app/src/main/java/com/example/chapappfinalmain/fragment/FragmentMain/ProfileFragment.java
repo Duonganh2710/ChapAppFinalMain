@@ -1,5 +1,7 @@
 package com.example.chapappfinalmain.fragment.FragmentMain;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -19,6 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.chapappfinalmain.Activity.MainApp.FristActivity;
+import com.example.chapappfinalmain.Activity.MainApp.ProfileActivity;
 import com.example.chapappfinalmain.Adapter.AdapterPaperProfile;
 import com.example.chapappfinalmain.Enum.DataOfUser;
 import com.example.chapappfinalmain.R;
@@ -30,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import org.jetbrains.annotations.NotNull;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import kotlin.Pair;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -37,7 +42,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView txtUserNameProfile, txtEmailProfile, txtNumberProfile;
     TabLayout tabTitle;
     ViewPager paperActivity;
-    CardView cardLogOut;
+    CardView cardViewProfile;
+
+
     AdapterPaperProfile adapterPaperProfile;
 
     FirebaseAuth auth;
@@ -70,7 +77,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         setLayoutWork();
 
-        cardLogOut.setOnClickListener(this);
+        cardViewProfile.setOnClickListener(this);
+
     }
 
     private void setLayoutWork() {
@@ -113,17 +121,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         txtNumberProfile = view.findViewById(R.id.txt_phone_profile);
         tabTitle = (TabLayout) view.findViewById(R.id.tab_title);
         paperActivity = (ViewPager) view.findViewById(R.id.paper_activity);
-        cardLogOut = view.findViewById(R.id.card_logout);
+        cardViewProfile = view.findViewById(R.id.card_view_profile);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.card_logout:{
-                auth = FirebaseAuth.getInstance();
-                auth.signOut();
-                Intent intent = new Intent(getContext(), FristActivity.class);
-                getActivity().startActivity(intent);
+            case R.id.card_view_profile:{
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                ActivityOptions options = ActivityOptions.
+                        makeSceneTransitionAnimation((Activity) getContext(), imgAvataProfile, "IMAGE_AVATAR");
+                getContext().startActivity(intent, options.toBundle());
+
+                break;
             }
         }
     }

@@ -31,6 +31,8 @@ public class AdapterFriend extends RecyclerView.Adapter<AdapterFriend.ViewHolder
         this.iOnclickData = iOnclickData;
         notifyDataSetChanged();
     }
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,19 +42,13 @@ public class AdapterFriend extends RecyclerView.Adapter<AdapterFriend.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final User user = listUser.get(position);
-        holder.txtUserName.setText(user.getUserName());
+
         if(user.getImgUri() != "Default"){
             Glide.with(context).load(user.getImgUri()).into(holder.imgAvatar);
         }else {
             holder.imgAvatar.setImageResource(R.drawable.ic_avatar);
         }
 
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               iOnclickData.sendData(user);
-            }
-        });
 
     }
 
@@ -64,12 +60,16 @@ public class AdapterFriend extends RecyclerView.Adapter<AdapterFriend.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgAvatar;
         TextView txtUserName;
-        LinearLayout linearLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtUserName = itemView.findViewById(R.id.txt_user);
             imgAvatar = itemView.findViewById(R.id.img_item_avatar);
-            linearLayout = itemView.findViewById(R.id.layout_item_chat);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    iOnclickData.sendData(listUser.get(getLayoutPosition()));
+                }
+            });
         }
     }
 }

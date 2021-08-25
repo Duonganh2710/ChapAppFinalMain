@@ -11,4 +11,9 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="dialog_slide_animation">
+        <item name="android:windowEnterAnimation">@anim/slide_start</item>
+        <item name="android:windowExitAnimation">@anim/slide_end</item>
+    </style>
+
 </resources>

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.chapappfinalmain.Adapter.AdpaterChat;
 import com.example.chapappfinalmain.R;
+import com.example.chapappfinalmain.fragment.FriendDataFragment;
 import com.example.chapappfinalmain.model.Chat;
 import com.example.chapappfinalmain.model.User;
 import com.google.firebase.database.DataSnapshot;
@@ -50,8 +51,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         init();
-
         getData();
+
         chatId = sortID(userData.getUserId(), friendData.getUserId());
 
         setLayout(friendData.getUserName(), friendData.getImgUri());
@@ -120,8 +121,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         friendData = (User) intent.getSerializableExtra("FriendData");
         userData = (User) intent.getSerializableExtra("UserData");
-
-
     }
 
     private void init(){
@@ -147,6 +146,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.but_more:{
+                FriendDataFragment.getInstance(friendData).show(getSupportFragmentManager(), FriendDataFragment.getInstance(friendData).getTag());
                 break;
             }
             case R.id.but_send_message:{

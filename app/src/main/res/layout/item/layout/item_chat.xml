@@ -28,12 +28,8 @@
             android:text="Admin 1233"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:layout_gravity="center_vertical"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:text="Hi Admin"/>
+
     </LinearLayout>
 </LinearLayout>

@@ -16,33 +16,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toolbar;
 
 import com.example.chapappfinalmain.Activity.MainApp.ChatActivity;
 import com.example.chapappfinalmain.Activity.MainApp.CreateContentActivity;
+import com.example.chapappfinalmain.Activity.MainApp.ProfileActivity;
 import com.example.chapappfinalmain.Adapter.AdapterFriend;
 import com.example.chapappfinalmain.R;
+import com.example.chapappfinalmain.model.Chat;
 import com.example.chapappfinalmain.model.User;
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class ChatFragment extends Fragment implements AdapterFriend.IOnclickData {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class ChatFragment extends Fragment implements AdapterFriend.IOnclickData, View.OnClickListener {
     private SearchView searchView;
     private RecyclerView listFriend;
+    private CircleImageView imgSetting;
 
     private AdapterFriend adapterFriend;
     private AdapterFriend.IOnclickData iOnclickData = this;
 
     private User user;
-    private View viewLayout;
-    private ArrayList<String> idChat;
 
     public static ChatFragment getInstance(User user) {
         ChatFragment fragment = new ChatFragment();
@@ -64,29 +75,15 @@ public class ChatFragment extends Fragment implements AdapterFriend.IOnclickData
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-        viewLayout = view;
+
         user = (User) getArguments().get("Object_user");
-
-        idChat = new ArrayList<>();
-
+        imgSetting.setOnClickListener(this);
         getDataFriend(user);
-
-
-    }
-
-    private String getAllIdChat(User user, User friend) {
-        String id;
-        String userID = user.getUserId();
-
-        String idChat = userID + friend.getUserId();
-        char[] arr = idChat.toCharArray();
-        Arrays.sort(arr);
-        id = new String(arr);
-        return id;
     }
 
     private void getDataFriend(User userData) {
         LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_list_chat);
+        listFriend.setLayoutAnimation(layoutAnimationController);
 
         if(userData == null) {
             Log.d("TAG", "null");
@@ -97,16 +94,12 @@ public class ChatFragment extends Fragment implements AdapterFriend.IOnclickData
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userList.clear();
-                    idChat.clear();
                     for(DataSnapshot dataSnapshot1 : snapshot.getChildren()){
                         User user = dataSnapshot1.getValue(User.class);
                         if(!user.getUserId().equals(userData.getUserId())) {
                             userList.add(user);
-                            idChat.add(getAllIdChat(userData, user));
                         }
                     }
-
-                    listFriend.setLayoutAnimation(layoutAnimationController);
                     listFriend.setLayoutManager(new LinearLayoutManager(getContext()));
                     adapterFriend = new AdapterFriend(getContext(), userList, iOnclickData);
                     listFriend.setAdapter(adapterFriend);
@@ -118,13 +111,6 @@ public class ChatFragment extends Fragment implements AdapterFriend.IOnclickData
                 }
             });
         }
-
-
-    }
-
-    private void init(View view){
-  //     searchView = view.findViewById(R.id.search_bar_list_friend);
-       listFriend = view.findViewById(R.id.list_user);
     }
 
     @Override
@@ -138,4 +124,63 @@ public class ChatFragment extends Fragment implements AdapterFriend.IOnclickData
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.img_setting:{
+                showBottomSheetSetting();
+                break;
+            }
+        }
+    }
+
+    private void showBottomSheetSetting() {
+        BottomSheetDialog dialogSetting = new BottomSheetDialog(getContext());
+        dialogSetting.setContentView(R.layout.dialog_setting);
+        LinearLayout layoutSetting = dialogSetting.findViewById(R.id.layout_setting);
+        LinearLayout layoutContent = dialogSetting.findViewById(R.id.layout_content);
+        LinearLayout layoutProfile = dialogSetting.findViewById(R.id.layout_profile);
+        LinearLayout layoutLogout = dialogSetting.findViewById(R.id.layout_logout);
+        
+        layoutSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+        layoutProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveToOtherActivity(ProfileActivity.class);
+            }
+        });
+        layoutContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveToOtherActivity(CreateContentActivity.class);
+            }
+        });
+        layoutLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogLogout();
+            }
+        });
+        
+        dialogSetting.show();
+    }
+
+    private void openDialogLogout() {
+    }
+
+    private void moveToOtherActivity(Class className){
+        Intent intent = new Intent(getContext(), className);
+        getContext().startActivity(intent);
+    }
+
+    private void init(View view){
+        //     searchView = view.findViewById(R.id.search_bar_list_friend);
+        listFriend = view.findViewById(R.id.list_user);
+        imgSetting = view.findViewById(R.id.img_setting);
+    }
 }
