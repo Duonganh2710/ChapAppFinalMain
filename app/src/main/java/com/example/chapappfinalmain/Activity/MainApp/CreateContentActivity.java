@@ -61,8 +61,7 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
     ImageView imgImageContent;
     Button butEditPhoto;
 
-    User user;
-    String pathImage;
+    Uri UriImage;
     String dataPhoto;
     String userId , userName, userImage;
 
@@ -73,9 +72,8 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
         init();
 
         getUserData();
-        getPathImage();
 
-        dataPhoto = getDataPhoto();
+        dataPhoto = getDataPhotoAfterEdit();
         if(dataPhoto != null){
             imgImageContent.setImageURI(Uri.fromFile(new File(dataPhoto)));
             setVisibility(true);
@@ -92,7 +90,7 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
         butEditPhoto.setOnClickListener(this);
     }
 
-    private String getDataPhoto() {
+    private String getDataPhotoAfterEdit() {
         Intent intent = getIntent();
         return intent.getStringExtra("PATH_IMAGE");
     }
@@ -126,13 +124,14 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
     }
 
     private void sendContentWithImg(String userID) {
+        String idContent = getIdContent();
         String time = getTime();
         String content = extContent.getText().toString();
-        Content dataContent = new Content(userID, userName, time, content, 0, 2, userImage);
+        Content dataContent = new Content(idContent, userID, userName, time, content, userImage);
 
-        Uri file = Uri.fromFile(new File(pathImage));
+//        Uri file = Uri.fromFile(new File(pathImage));
 
-        ThreadUpdateContent threadUpdateContent = new ThreadUpdateContent(dataContent, file);
+        ThreadUpdateContent threadUpdateContent = new ThreadUpdateContent(dataContent, UriImage);
         threadUpdateContent.run();
     }
     public static String getRealPathFromURI(Context context, Uri uri) {
@@ -167,7 +166,9 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
         }
 
     }
-
+    private String getIdContent(){
+        return "Content" + System.currentTimeMillis();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
@@ -181,8 +182,7 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                pathImage = getRealPathFromURI(getApplicationContext(), uri);
+                UriImage = uri;
                 setVisibility(true);
             }
         }
@@ -198,13 +198,13 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
         userName = preferences.getString(String.valueOf(DataOfUser.UserName), "1");
         userImage = preferences.getString(String.valueOf(DataOfUser.ImageUrl), "1");
     }
-    private void getPathImage() {
-        Intent intent = getIntent();
-        pathImage = intent.getStringExtra("PATH_IMAGE");
-        if(pathImage != null){
-            imgImageContent.setImageURI(Uri.fromFile(new File(pathImage)));
-        }
-    }
+//    private void getPathImageAfterEdit() {
+//        Intent intent = getIntent();
+//        pathImage = intent.getStringExtra("PATH_IMAGE");
+//        if(pathImage != null){
+//            imgImageContent.setImageURI(Uri.fromFile(new File(pathImage)));
+//        }
+//    }
 
     private String getTime() {
         String time = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
@@ -237,10 +237,9 @@ public class CreateContentActivity extends AppCompatActivity implements View.OnC
                 break;
             }
             case R.id.but_open_edit_photo:{
-                Uri uri = Uri.fromFile(new File(pathImage));
-                if(uri != null){
+                if(UriImage != null){
                     Intent intent = new Intent(CreateContentActivity.this, EditImageActivity.class);
-                    intent.putExtra("URI_IMAGE", uri);
+                    intent.putExtra("URI_IMAGE", UriImage);
                     ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
                             .makeSceneTransitionAnimation(CreateContentActivity.this, findViewById(R.id.img_add_image), "photoEdit");
                     startActivity(intent, optionsCompat.toBundle());

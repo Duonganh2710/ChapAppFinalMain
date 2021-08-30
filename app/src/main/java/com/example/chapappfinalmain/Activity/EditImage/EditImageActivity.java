@@ -131,8 +131,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.but_back:{
-               backActivity(null);
-               break;
+                backActivity(null);
+                break;
             }
             case R.id.but_check:{
                 savaImage();

@@ -34,9 +34,9 @@ public class ThreadUpdateContent extends Thread{
     }
 
     private void updataImage(Uri dataImage) {
-        String id = dataImage.getLastPathSegment() + "_" +System.currentTimeMillis();
+        String idPostImage = dataImage.getLastPathSegment() + "_" +System.currentTimeMillis();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference reference = storage.getInstance().getReference("Post").child(dataImage.getLastPathSegment());
+        final StorageReference reference = storage.getInstance().getReference("Post").child(idPostImage);
 
         UploadTask task = reference.putFile(dataImage);
         task.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -56,14 +56,12 @@ public class ThreadUpdateContent extends Thread{
             }
         });
     }
-
     private void updateData(Uri uri, Content content) {
-        String id = String.valueOf(System.currentTimeMillis());
-        Content dataContent = new Content(content.getIdUser(), content.getUserName(), content.getTime(),
-                content.getCommentOfContent(), uri.toString(), content.getNumberLike(), content.getStaticContent(), content.getUrlAvatar());
+        Content dataContent = new Content(content.getIdContent() ,content.getIdUser(), content.getUserName(), content.getTime(),
+                content.getCommentOfContent(), uri.toString(), content.getUrlAvatar());
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Post");
-        reference.child(id).setValue(dataContent).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(content.getIdContent()).setValue(dataContent).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
 

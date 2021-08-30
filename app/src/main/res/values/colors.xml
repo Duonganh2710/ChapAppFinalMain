@@ -11,6 +11,8 @@
     <color name="background_yellow">#EDA638</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
+    <color name="color_change_data">#E81212</color>
+    <color name="app_bar_comment_blue">#344ff4</color>
 
     <color name="blue_color_picker">#0066FF</color>
     <color name="brown_color_picker">#AF593E</color>

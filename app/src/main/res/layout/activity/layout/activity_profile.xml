@@ -44,6 +44,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+    <ImageView
+        android:id="@+id/img_change_avatar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_camera"
+        android:elevation="4dp"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="@id/img_avatar"
+        app:layout_constraintBottom_toBottomOf="@id/img_avatar"
+        app:layout_constraintWidth_percent="0.06" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -56,17 +66,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.609"
         tools:layout_editor_absoluteX="10dp">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintDimensionRatio="1"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.08" />
 
         <TextView
             android:id="@+id/txt_user_name"
@@ -84,69 +83,157 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="5dp"
             android:elevation="3dp"
-            android:background="@drawable/background_card_profile"
-            android:paddingLeft="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.08"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.25">
-
-            <ImageView
-                android:id="@+id/img_email"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_email"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:elevation="3dp"
-                android:src="@drawable/ic_baseline_email_24"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_email"
-                android:layout_width="wrap_content"
+                android:visibility="visible"
+                android:paddingLeft="10dp"
+                android:background="@drawable/background_card_profile">
+                <ImageView
+                    android:id="@+id/img_email"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:elevation="3dp"
+                    android:src="@drawable/ic_baseline_email_24"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+                <TextView
+                    android:id="@+id/txt_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="nguyenanhduong@gmail.com"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@id/img_email" />
+                <ImageView
+                    android:id="@+id/img_email_change"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_next"
+                    android:background="@drawable/custom_but_change_data_profile"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_email_edit"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:text="nguyenanhduong@gmail.com"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toRightOf="@id/img_email" />
+                android:visibility="invisible"
+                android:paddingLeft="10dp"
+                android:background="@drawable/background_card_profile">
+                <ImageView
+                    android:id="@+id/img_email_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:elevation="3dp"
+                    android:src="@drawable/ic_baseline_email_24"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+                <EditText
+                    android:id="@+id/ext_email_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:hint="Email"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:shadowColor="@color/black"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/img_email_edit" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/background_card_profile"
             android:elevation="3dp"
-            android:paddingLeft="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.08"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.38">
-
-            <ImageView
-                android:id="@+id/img_phone"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_phone_number"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_baseline_phone_24"
-                app:layout_constraintDimensionRatio="1"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                android:visibility="visible"
+                android:paddingLeft="10dp"
+                android:background="@drawable/background_card_profile">
+                <ImageView
+                    android:id="@+id/img_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_baseline_phone_24"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+                <TextView
+                    android:id="@+id/txt_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="033 590 4415"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toRightOf="@id/img_phone" />
+                <ImageView
+                    android:id="@+id/img_phone_number_change"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_next"
+                    android:background="@drawable/custom_but_change_data_profile"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/txt_phone"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_phone_number_edit"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
-                android:text="033 590 4415"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toRightOf="@id/img_phone" />
+                android:visibility="invisible"
+                android:paddingLeft="10dp"
+                android:background="@drawable/background_card_profile">
+                <ImageView
+                    android:id="@+id/img_phone_number_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:elevation="3dp"
+                    android:src="@drawable/ic_baseline_phone_24"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+                <EditText
+                    android:id="@+id/ext_phone_number_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:hint="Email"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:shadowColor="@color/black"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/img_phone_number_edit" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -197,7 +284,7 @@
             android:layout_height="0dp"
             android:background="@drawable/background_card_profile"
             android:text="Edit profile"
-            android:textColor="#EA0808"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

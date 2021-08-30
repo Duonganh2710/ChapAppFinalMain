@@ -64,7 +64,7 @@ public class PublishFragment extends Fragment implements AdapterProfileImg.IOncl
                 listContent.clear();
                 for(DataSnapshot dataSnapshot1: snapshot.getChildren()) {
                     Content content = dataSnapshot1.getValue(Content.class);
-                    if(content.getIdUser().equals(userCurrent.getUid()) || content.getStaticContent() == 1){
+                    if(content.getIdUser().equals(userCurrent.getUid())){
                         listContent.add(content);
                     }
                 }

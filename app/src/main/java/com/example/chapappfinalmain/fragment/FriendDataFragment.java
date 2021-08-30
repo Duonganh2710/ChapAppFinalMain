@@ -1,22 +1,31 @@
 package com.example.chapappfinalmain.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.usb.UsbDevice;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,12 +40,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class FriendDataFragment extends DialogFragment implements View.OnClickListener {
+    private static final int CALL_KEY = 1;
+
     private CircleImageView imgClose, imgAvatarFriend;
     private TextView txtUserName;
     private LinearLayout layoutMessager, layoutCall, layoutProfile;
     private CardView cardProfile;
 
     private User friend;
+    private boolean showCardFrofile = false;
 
     public static FriendDataFragment getInstance(User friendData){
         FriendDataFragment fragment = new FriendDataFragment();
@@ -64,7 +76,6 @@ public class FriendDataFragment extends DialogFragment implements View.OnClickLi
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpView(view);
-        setupClickListeners(view);
 
         friend = (User) getArguments().get("FRIEND_DATA");
 
@@ -76,29 +87,68 @@ public class FriendDataFragment extends DialogFragment implements View.OnClickLi
         layoutCall.setOnClickListener(this);
     }
 
-    private void setupClickListeners(View view) {
-        switch (view.getId()){
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
             case R.id.img_close_dialog:{
                 getDialog().dismiss();
                 break;
             }
             case R.id.layout_profile:{
-                cardProfile.setVisibility(View.VISIBLE);
+                showCardFrofile = !showCardFrofile;
+                setVisibilityCardProfile(showCardFrofile);
                 break;
             }
             case R.id.layout_messager:{
                 getDialog().dismiss();
                 break;
             }
+            case R.id.layout_call:{
+                callFriend(friend.getPhoneNumber());
+                break;
+            }
+        }
+    }
+
+    private void callFriend(String phoneNumber) {
+        if(ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, CALL_KEY);
+        }else {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + phoneNumber));
+            startActivity(intent);
         }
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.img_close_dialog:{
-                getDialog().dismiss();
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case CALL_KEY:{
+
+                break;
             }
+        }
+    }
+
+    private void setVisibilityCardProfile(boolean b){
+        if (b){
+            cardProfile.setVisibility(View.VISIBLE);
+
+            TranslateAnimation animation = new TranslateAnimation(0, 0,
+                    cardProfile.getHeight(), 0);
+            animation.setDuration(500);
+            animation.setFillAfter(true);
+            cardProfile.setAnimation(animation);
+        }else {
+            TranslateAnimation animation = new TranslateAnimation(0, 0,
+                    0, cardProfile.getHeight());
+            animation.setDuration(500);
+            animation.setFillAfter(true);
+            cardProfile.setAnimation(animation);
+
+            cardProfile.setVisibility(View.GONE);
         }
     }
 

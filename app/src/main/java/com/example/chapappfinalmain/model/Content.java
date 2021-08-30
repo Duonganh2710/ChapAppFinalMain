@@ -2,55 +2,46 @@ package com.example.chapappfinalmain.model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
+
 @IgnoreExtraProperties
 public class Content {
+    private String idContent;
     private String idUser;
     private String userName;
     private String time;
     private String commentOfContent;
     private String urlImage;
-    private int numberLike;
-    private int staticContent;
     private String urlAvatar;
 
-    public Content(String idUser, String userName, String time, String commentOfContent, String urlImage, int numberLike, int staticContent, String urlAvatar) {
+    public Content() {
+    }
+
+    public Content(String idContent, String idUser, String userName, String time, String commentOfContent, String urlImage, String urlAvatar) {
+        this.idContent = idContent;
         this.idUser = idUser;
         this.userName = userName;
         this.time = time;
         this.commentOfContent = commentOfContent;
         this.urlImage = urlImage;
-        this.numberLike = numberLike;
-        this.staticContent = staticContent;
         this.urlAvatar = urlAvatar;
     }
 
-
-
-    public Content(String idUser, String userName, String time, String commentOfContent, int numberLike, int staticContent, String urlAvatar) {
+    public Content(String idContent, String idUser, String userName, String time, String commentOfContent, String urlAvatar) {
+        this.idContent = idContent;
         this.idUser = idUser;
         this.userName = userName;
         this.time = time;
         this.commentOfContent = commentOfContent;
-        this.numberLike = numberLike;
-        this.staticContent = staticContent;
         this.urlAvatar = urlAvatar;
     }
 
-    public Content() {
+    public String getIdContent() {
+        return idContent;
     }
 
-    @Override
-    public String toString() {
-        return "Content{" +
-                "idUser='" + idUser + '\'' +
-                ", userName='" + userName + '\'' +
-                ", time='" + time + '\'' +
-                ", commentOfContent='" + commentOfContent + '\'' +
-                ", urlImage='" + urlImage + '\'' +
-                ", numberLike=" + numberLike +
-                ", staticContent=" + staticContent +
-                ", urlAvatar='" + urlAvatar + '\'' +
-                '}';
+    public void setIdContent(String idContent) {
+        this.idContent = idContent;
     }
 
     public String getIdUser() {
@@ -93,27 +84,24 @@ public class Content {
         this.urlImage = urlImage;
     }
 
-    public int getNumberLike() {
-        return numberLike;
-    }
-
-    public void setNumberLike(int numberLike) {
-        this.numberLike = numberLike;
-    }
-
-    public int getStaticContent() {
-        return staticContent;
-    }
-
-    public void setStaticContent(int staticContent) {
-        this.staticContent = staticContent;
-    }
-
     public String getUrlAvatar() {
         return urlAvatar;
     }
 
     public void setUrlAvatar(String urlAvatar) {
         this.urlAvatar = urlAvatar;
+    }
+
+    @Override
+    public String toString() {
+        return "Content{" +
+                "idContent='" + idContent + '\'' +
+                ", idUser='" + idUser + '\'' +
+                ", userName='" + userName + '\'' +
+                ", time='" + time + '\'' +
+                ", commentOfContent='" + commentOfContent + '\'' +
+                ", urlImage='" + urlImage + '\'' +
+                ", urlAvatar='" + urlAvatar + '\'' +
+                '}';
     }
 }

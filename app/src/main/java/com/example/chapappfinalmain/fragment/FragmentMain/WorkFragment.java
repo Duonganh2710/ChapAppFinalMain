@@ -29,12 +29,17 @@ import com.example.chapappfinalmain.R;
 import com.example.chapappfinalmain.model.Content;
 import com.example.chapappfinalmain.model.User;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 
-public class WorkFragment extends Fragment {
+public class WorkFragment extends Fragment implements View.OnClickListener, AdapterWork.ClickLikeAndComment {
     CircleImageView imgAvatar;
     LinearLayout linearLayout;
     FloatingActionButton butAddContent;
@@ -76,46 +81,55 @@ public class WorkFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         user = (User) getArguments().get("Object_user");
 
-        getDataUser(user, view);
+        Glide.with(view).load(user.getImgUri()).into(imgAvatar);
+        txtUserName.setText(user.getUserName());
+
+        rcyWork.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapterWork = new AdapterWork(listContent, getContext(), this);
+        rcyWork.setAdapter(adapterWork);
+
         getDataWork();
 
-        butAddContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CreateContentActivity.class);
-                startActivity(intent);
-            }
-        });
+        butAddContent.setOnClickListener(this);
     }
 
     private void getDataWork() {
-        rcyWork.setLayoutManager(new LinearLayoutManager(getContext()));
-
         DatabaseReference dataContent = FirebaseDatabase.getInstance().getReference("Post");
-        dataContent.addValueEventListener(new ValueEventListener() {
+        dataContent.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                listContent.clear();
-                for(DataSnapshot dataSnapshot1 : snapshot.getChildren()){
-                    Content content = dataSnapshot1.getValue(Content.class);
-                    listContent.add(content);
-
-                }
+            public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Content content = snapshot.getValue(Content.class);
+                listContent.add(content);
                 Collections.reverse(listContent);
-                adapterWork = new AdapterWork(listContent, getContext());
-                rcyWork.setAdapter(adapterWork);
+                adapterWork.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Content content = snapshot.getValue(Content.class);
+                listContent.set(getNumberOfItem(content.getIdContent()), content);
+                adapterWork.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+                Content content = snapshot.getValue(Content.class);
+                listContent.remove(getNumberOfItem(content.getIdContent()));
+                adapterWork.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
 
             }
-        });
-    }
 
-    private void getDataUser(User user, View view) {
-        Glide.with(view).load(user.getImgUri()).into(imgAvatar);
-        txtUserName.setText(user.getUserName());
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+
+        });
+
     }
 
     private void init(View view) {
@@ -125,5 +139,46 @@ public class WorkFragment extends Fragment {
         txtUserName = view.findViewById(R.id.txt_user_name);
         rcyWork = view.findViewById(R.id.rcy_work);
     }
+    private int getNumberOfItem (String idContent) {
+        int numberItem = 0;
+        for(int i = 0; i <= listContent.size() - 1; i++){
+            if(listContent.get(i).getIdContent().equals(idContent)) {
+                numberItem =  i;
+                break;
+            }
+        }
+        return numberItem;
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.but_add_content:{
+                Intent intent = new Intent(getActivity(), CreateContentActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }
+    }
 
+
+    @Override
+    public void OnClickLiKeContent(String idContent, boolean isLiked) {
+        FirebaseDatabase dataLike = FirebaseDatabase.getInstance();
+        if(!isLiked){
+            dataLike.getReference().child("Like").
+                    child(idContent).
+                    child(user.getUserId()).
+                    setValue(true);
+        }else {
+            dataLike.getReference().child("Like").
+                    child(idContent).
+                    child(user.getUserId()).
+                    removeValue();
+        }
+    }
+
+    @Override
+    public void OnClickComment(String idContent) {
+
+    }
 }

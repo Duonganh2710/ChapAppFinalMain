@@ -33,4 +33,7 @@
     <string name="edit_image_Layout_title">Edit Image</string>
     <string name="done">Done</string>
 
+    <string name="liked">Liked</string>
+    <string name="like_default">Default</string>
+
 </resources>

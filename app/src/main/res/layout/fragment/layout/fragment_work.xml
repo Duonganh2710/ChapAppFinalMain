@@ -39,8 +39,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="50dp"
             tools:listitem="@layout/item_work"
-            android:paddingHorizontal="2dp"
-            android:paddingVertical="5dp"
             android:background="@drawable/background_content_work_layout">
         </androidx.recyclerview.widget.RecyclerView>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
